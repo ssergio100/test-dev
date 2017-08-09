@@ -29,7 +29,7 @@
 			    </div>
 			</div>
 			<div class="col-md-3" style="padding-bottom: 5px;">
-			<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalAdd">Adicionar</button>
+			<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalAdd">+ Adicionar</button>
 			</div>
 			</div>
 			<table class="table" id="car-table"  data-toolbar="#toolbar">
@@ -133,8 +133,7 @@
 		         	var marca = $('select#marca').val();
 		         	var ano = $('input#ano').val();
 
-		         	var n = ano.length; alert(n);
-
+		         	var n = ano.length; 
 		         	$( "#nome" ).css('background-color','white');
 		         	$( "#marca" ).css('background-color','white');
 
