@@ -35,9 +35,10 @@
 			<table class="table" id="car-table"  data-toolbar="#toolbar">
 				<thead>
 					<tr>
-						<th data-field="id">#id</th>
-						<th data-field="nome" data-sortable="true" data-align="left">nome</th>
-						<th data-field="marca" data-sortable="true" data-align="left">marca</th>
+						<th data-field="id">#Id</th>
+						<th data-field="nome" data-sortable="true" data-align="left">Modelo</th>
+						<th data-field="marca" data-sortable="true" data-align="left">Marca</th>
+						<th data-field="ano" data-sortable="true" data-align="left">Ano</th>
 						<th data-formatter="operateFormatter" data-events="operateEvents" data-align="center">ações</th>
 					</tr>	
 				</thead>			
@@ -58,8 +59,12 @@
 		            <form>
 		                <div class="modal-body">
 		                    <div class="form-group">
-		                        <label for="nome">Nome do veículo</label>
-		                        <input type="text" class="form-control" id="nome" required ='true'> 
+		                        <label for="nome">Modelo</label>
+		                        <input type="text" maxlength="25" class="form-control" id="nome" placeholder=" ex: fusca" required ='true'> 
+		                    </div>
+		                     <div class="form-group">
+		                        <label for="ano">Ano</label>
+		                        <input type="number" maxlength="4" class="form-control" id="ano" placeholder="ex: 1975" required ='true'> 
 		                    </div>
 		                    <div class="form-group">
 		                        <label for="marca">Marca</label>
@@ -112,7 +117,7 @@
 
 		    window.operateEvents = {
 		        'click .edit': function (e, value, row, index) {
-		                editar(row['id'],row['nome'],row['marca']);
+		                editar(row['id'],row['nome'],row['marca'],row['ano']);
 		        },
 		        'click .remove': function (e, value, row, index) {
 
@@ -126,6 +131,9 @@
 		  
 				 	var name = $('input#nome').val();
 		         	var marca = $('select#marca').val();
+		         	var ano = $('input#ano').val();
+
+		         	var n = ano.length; alert(n);
 
 		         	$( "#nome" ).css('background-color','white');
 		         	$( "#marca" ).css('background-color','white');
@@ -139,10 +147,15 @@
 		         		$( "#marca" ).css('background-color','yellow');
 		         		return false;
 		         	}
+
+		         	if (ano == '' || n > 4) {
+		         		$( "#ano" ).css('background-color','yellow');
+		         		return false;
+		         	}
 		         	$('#form-message').removeClass().addClass('alert alert-info').html('Aguarde...').fadeIn();
 		         	var id = $('input#id').val();
 		         	var _method = $('input#_method').val();
-		       		var formData = 'nome=' + name + '&marca=' + marca +'&id='+id+'&_method='+_method;
+		       		var formData = 'nome=' + name + '&marca=' + marca +'&ano='+ano+'&id='+id+'&_method='+_method;
 		       
 					$.ajax({
 				      	type: 'POST',
@@ -186,10 +199,11 @@
 		    	}
 			}
 
-		  	function editar(_id, _nome, _marca){ 
+		  	function editar(_id, _nome, _marca, _ano){ 
 		   		$('#id').val(_id);
 		   		$('#nome').val(_nome);
 		   		$('#marca').val(_marca);
+		   		$('#ano').val(_ano);
 		   		$('#_method').attr('value','PATCH');
 		   		$('#adicionar').text('Atualizar');
 		   		$('#form-message').html('').css('display','none');
@@ -201,10 +215,12 @@
 		 		$('#id').val('');
 		   		$('#nome').val('');
 		   		$('#marca').val('');
+		   		$('#ano').val('');
 		   		$('#_method').val('POST');
 		   		$('#adicionar').text('Cadastrar');
 		   		$('.modal-title').text('Cadastrar veículo');
 		   		$('#marca').val('');
+		   		$('#form-message').css('display','none');
 
 		 	}
 
@@ -240,14 +256,15 @@
 		    }
 		  
 		  	function load(){
-		  		clearModal();
 
 		        $.getJSON( "/test-dev/public/carros", function( data ) {
 		        	$('#car-table').bootstrapTable("load", data.data);
 		    	});
 		    }
 
-		    
+		    $('#modalAdd').on('hidden.bs.modal', function () {
+    			clearModal();
+			})
 		</script>
 	</body>
 </html>

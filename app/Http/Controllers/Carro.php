@@ -38,6 +38,7 @@ class Carro extends Controller
         $id = isset($_POST['id']) ? $_POST['id'] : null;
         $nome = isset($_POST['nome']) ? $_POST['nome'] : null;
         $marca = isset($_POST['marca']) ? $_POST['marca'] : null;
+        $ano = isset($_POST['ano']) ? $_POST['ano'] : null;
     	$response = new \stdClass();
         $response->success = false;
         $newArray = [];
@@ -48,6 +49,7 @@ class Carro extends Controller
             if ($value['id'] == $id){
                 $arrayAllCarros[$key]['nome'] = $nome;
                 $arrayAllCarros[$key]['marca'] = $marca;
+                $arrayAllCarros[$key]['ano'] = $ano;
             }
         }
 
@@ -88,8 +90,9 @@ class Carro extends Controller
 
     public function add()
     { 
-    	$carro['nome'] = $_POST['nome'];
-    	$carro['marca'] = $_POST['marca'];
+    	$carro['nome'] = isset($_POST['nome']) ? $_POST['nome'] : null;
+    	$carro['marca'] = isset($_POST['marca'])? $_POST['marca'] : null;
+        $carro['ano'] = isset($_POST['ano'])? $_POST['ano'] : null;
         $response = new \stdClass();
         $response->success = false;
 
@@ -118,7 +121,7 @@ class Carro extends Controller
     	$allCarrosarray = json_decode($this->getAllCarros(),1); 
         if (count($allCarrosarray) > 1) {
 	    	foreach ($allCarrosarray as $key => $value) {     
-	    	 	if ($value['nome'] == $array['nome'] && $value['marca'] == $array['marca']) {
+	    	 	if ($value['nome'] == $array['nome'] && $value['marca'] == $array['marca'] &&  $value['ano'] == $array['ano']) {
 		    	 	$return = false;
 	    	 		 break;
 	    	 	}
